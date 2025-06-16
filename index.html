@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ralph Saade - Shopify Developer Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #f59e0b;
+      --accent: #10b981;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --text-light: #9ca3af;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-dark: #0f172a;
+      --border: #e5e7eb;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Navigation */
+    nav {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 16px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 0.95rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 50%;
+      background: var(--primary);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .mobile-menu-toggle span {
+      width: 25px;
+      height: 3px;
+      background: var(--text-primary);
+      margin: 3px 0;
+      transition: 0.3s;
+      border-radius: 2px;
+    }
+
+    .mobile-menu-toggle.active span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .mobile-menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-toggle.active span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 24px;
+      transform: translateY(-100%);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .mobile-menu.active {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 16px 0;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.3s ease;
+    }
+
+    .mobile-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--primary);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      opacity: 0.3;
+    }
+
+    .hero-content {
+      text-align: center;
+      color: white;
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 0 24px;
+    }
+
+    .hero-avatar {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 32px;
+      display: block;
+      border: 6px solid rgba(255, 255, 255, 0.2);
+      box-shadow: var(--shadow-xl);
+      transition: transform 0.3s ease;
+    }
+
+    .hero-avatar:hover {
+      transform: scale(1.05);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff, #f0f9ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-description {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Section Styles */
+    section {
+      padding: 100px 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* About Section */
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .about-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg-primary);
+      padding: 32px 24px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: block;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    /* Projects Section */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 32px;
+    }
+
+    .project-card {
+      background: var(--bg-primary);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .project-image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .project-card:hover .project-image {
+      transform: scale(1.05);
+    }
+
+    .project-content {
+      padding: 24px;
+    }
+
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .project-title a {
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .project-title a:hover {
+      color: var(--primary);
+    }
+
+    .project-description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* Services Section */
+    .services {
+      background: var(--bg-primary);
+      padding: 100px 24px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .service-card {
+      background: var(--bg-secondary);
+      padding: 40px 32px;
+      border-radius: 16px;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid var(--border);
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+
+    .service-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 24px;
+      color: white;
+    }
+
+    .service-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .service-description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Contact Section */
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .contact-info {
+      padding: 40px;
+      background: var(--bg-primary);
+      border-radius: 20px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .contact-form {
+      background: var(--bg-primary);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      background: var(--bg-secondary);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-dark);
+      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+      padding: 40px 24px;
+      margin-top: 100px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .about-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .contact-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .projects-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: flex;
+      }
+
+      .hero {
+        padding: 120px 16px 80px;
+        min-height: 90vh;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 8vw, 2.5rem);
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .hero-description {
+        font-size: 1rem;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+        width: 200px;
+        justify-content: center;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .section-subtitle {
+        font-size: 1rem;
+      }
+
+      .about-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .stat-card {
+        padding: 24px 16px;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .service-card {
+        padding: 32px 24px;
+      }
+
+      section {
+        padding: 60px 0;
+      }
+
+      .section-header {
+        margin-bottom: 40px;
+      }
+
+      .services {
+        margin: 0 -16px;
+        padding: 60px 16px;
+      }
+
+      .contact-form,
+      .contact-info {
+        padding: 32px 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-container {
+        padding: 0 16px;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+      }
+
+      .hero {
+        padding: 100px 16px 60px;
+      }
+
+      .hero-avatar {
+        width: 140px;
+        height: 140px;
+        margin-bottom: 24px;
+      }
+
+      .hero h1 {
+        font-size: clamp(1.8rem, 7vw, 2.2rem);
+        margin-bottom: 12px;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+      }
+
+      .hero-description {
+        font-size: 0.95rem;
+        margin-bottom: 32px;
+      }
+
+      section {
+        padding: 50px 16px;
+      }
+
+      .section-title {
+        font-size: 1.75rem;
+      }
+
+      .section-subtitle {
+        font-size: 0.95rem;
+      }
+
+      .about-stats {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .project-card {
+        border-radius: 16px;
+      }
+
+      .project-image {
+        height: 180px;
+      }
+
+      .project-content {
+        padding: 20px;
+      }
+
+      .services {
+        margin: 0 -16px;
+        padding: 50px 16px;
+      }
+
+      .service-card {
+        padding: 24px 20px;
+      }
+
+      .service-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .contact-form,
+      .contact-info {
+        padding: 24px 20px;
+      }
+
+      .form-input {
+        padding: 14px;
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding: 90px 12px 50px;
+      }
+
+      .hero-avatar {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 20px;
+      }
+
+      .hero h1 {
+        font-size: clamp(1.6rem, 6vw, 2rem);
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+
+      .hero-description {
+        font-size: 0.9rem;
+        margin-bottom: 28px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        width: 180px;
+      }
+
+      section {
+        padding: 40px 12px;
+      }
+
+      .section-title {
+        font-size: 1.6rem;
+      }
+
+      .section-header {
+        margin-bottom: 32px;
+      }
+
+      .stat-card {
+        padding: 20px 16px;
+      }
+
+      .stat-number {
+        font-size: 1.8rem;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+      }
+
+      .project-image {
+        height: 160px;
+      }
+
+      .project-content {
+        padding: 16px;
+      }
+
+      .project-title {
+        font-size: 1.1rem;
+      }
+
+      .project-description {
+        font-size: 0.9rem;
+      }
+
+      .tag {
+        font-size: 0.8rem;
+        padding: 3px 10px;
+      }
+
+      .services {
+        margin: 0 -12px;
+        padding: 40px 12px;
+      }
+
+      .service-card {
+        padding: 20px 16px;
+      }
+
+      .service-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+        margin-bottom: 16px;
+      }
+
+      .service-title {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+      }
+
+      .service-description {
+        font-size: 0.9rem;
+      }
+
+      .contact-form,
+      .contact-info {
+        padding: 20px 16px;
+      }
+
+      .form-input {
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+
+      .form-textarea {
+        min-height: 100px;
+      }
+    }
+
+    /* Ultra small screens */
+    @media (max-width: 360px) {
+      .nav-container {
+        padding: 0 12px;
+      }
+
+      .logo {
+        font-size: 1.3rem;
+      }
+
+      .hero {
+        padding: 80px 8px 40px;
+      }
+
+      .hero-avatar {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 16px;
+      }
+
+      .hero h1 {
+        font-size: 1.4rem;
+      }
+
+      .hero-subtitle {
+        font-size: 0.95rem;
+      }
+
+      .hero-description {
+        font-size: 0.85rem;
+        margin-bottom: 24px;
+      }
+
+      .btn {
+        width: 160px;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+      }
+
+      section {
+        padding: 32px 8px;
+      }
+
+      .section-title {
+        font-size: 1.4rem;
+      }
+
+      .section-subtitle {
+        font-size: 0.85rem;
+      }
+
+      .services {
+        margin: 0 -8px;
+        padding: 32px 8px;
+      }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      40% {
+        transform: translateX(-50%) translateY(-10px);
+      }
+      60% {
+        transform: translateX(-50%) translateY(-5px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">RS</div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="mobile-menu-toggle" id="mobileMenuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <img src="ralph.jpg" alt="Ralph Saade" class="hero-avatar">
+      <h1>Ralph Saade</h1>
+      <p class="hero-subtitle">Shopify Theme Developer</p>
+      <p class="hero-description">Transforming Shopify themes into custom, high-converting storefronts that drive sales and deliver exceptional user experiences.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21l-12-18h24z"/>
+      </svg>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="section-header">
+      <h2 class="section-title">About Me</h2>
+      <p class="section-subtitle">Passionate about creating beautiful, functional Shopify experiences</p>
+    </div>
+    <div class="about-content">
+      <div>
+        <p class="about-text">
+          I hold a degree in Information Technology and have dedicated my career to mastering Shopify theme development. My expertise lies in transforming ready-made themes like Dawn into unique, custom storefronts that perfectly reflect each brand's identity.
+        </p>
+        <br>
+        <p class="about-text">
+          I specialize in creating custom sections, seamless app integrations, and implementing performance optimizations that boost both user experience and search engine rankings. Every project is an opportunity to blend technical excellence with creative design.
+        </p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <span class="stat-number">5</span>
+          <span class="stat-label">Projects Completed</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">1</span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Client Satisfaction</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">24/7</span>
+          <span class="stat-label">Support Available</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="projects">
+    <div class="section-header">
+      <h2 class="section-title">Featured Projects</h2>
+      <p class="section-subtitle">A showcase of my latest Shopify development work</p>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <img src="josee.png" alt="joseefrem.com Screenshot" class="project-image">
+        <div class="project-content">
+          <h3 class="project-title">
+            <a href="https://joseefrem.com/" target="_blank">joseefrem.com</a>
+          </h3>
+          <p class="project-description">Stylish online store focused on women's fashion, built to enhance shopping experience with refined theme customization</p>
+          <div class="project-tags">
+            <span class="tag">Custom Theme</span>
+            <span class="tag">Premium Design</span>
+            <span class="tag">SEO Optimized</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="abousamra.png" alt="joseefrem.com Screenshot" class="project-image">
+        <div class="project-content">
+          <h3 class="project-title">
+            <a href="https://abousamracojewellery.com/" target="_blank">abousamracojewellery.com</a>
+          </h3>
+          <p class="project-description">A refined Shopify store designed to showcase elegant and timeless jewelry collections. The layout emphasizes visual storytelling and user-friendly navigation, creating a luxurious and seamless shopping experience.</p>
+          <div class="project-tags">
+            <span class="tag">Creative Design</span>
+            <span class="tag">Premium Design</span>
+            <span class="tag">Performance</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="project-card">
+        <img src="morgan.png" alt="morganhomess.com Screenshot" class="project-image">
+        <div class="project-content">
+          <h3 class="project-title">
+            <a href="https://morganhomess.com/" target="_blank">morganhomess.com</a>
+          </h3>
+          <p class="project-description">Home goods store setup with theme configuration, layout structuring, and performance optimization. Implemented advanced filtering and search functionality.</p>
+          <div class="project-tags">
+            <span class="tag">E-commerce</span>
+            <span class="tag">Performance</span>
+            <span class="tag">User Experience</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="project-card">
+        <img src="flow.png" alt="flowritings.com Screenshot" class="project-image">
+        <div class="project-content">
+          <h3 class="project-title">
+            <a href="https://flowritings.com/" target="_blank">flowritings.com</a>
+          </h3>
+          <p class="project-description">Shopify website providing writing and translation services with booking functionality</p>
+          <div class="project-tags">
+            <span class="tag">Booking functionality</span>
+            <span class="tag">Custom Sections</span>
+            <span class="tag">Creative Design</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="project-card">
+        <img src="beads.png" alt="beadsfactory.com Screenshot" class="project-image">
+        <div class="project-content">
+          <h3 class="project-title">
+            <a href="https://www.beadsfactory.com/" target="_blank">beadsfactory.com</a>
+          </h3>
+          <p class="project-description">E-commerce website dedicated to selling Swarovski elements and related jewelry supplies, with ongoing maintenance and updates</p>
+          <div class="project-tags">
+            <span class="tag">Maintenance</span>
+            <span class="tag">Optimization</span>
+            <span class="tag">Long-term Support</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services">
+    <div class="section-header">
+      <h2 class="section-title">Services</h2>
+      <p class="section-subtitle">Comprehensive Shopify development solutions for your business</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <h3 class="service-title">Theme Customization</h3>
+        <p class="service-description">Transform existing themes into unique, brand-aligned storefronts that stand out from the competition.</p>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3 class="service-title">Performance Optimization</h3>
+        <p class="service-description">Speed up your store and fix bugs to ensure smooth user experience and better search rankings.</p>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <h3 class="service-title">Custom Development</h3>
+        <p class="service-description">Build new sections, snippets, and functionality tailored to your specific business needs.</p>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-icon">🔌</div>
+        <h3 class="service-title">App Integration</h3>
+        <p class="service-description">Seamlessly integrate third-party apps and custom solutions to extend your store's capabilities.</p>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-icon">📈</div>
+        <h3 class="service-title">SEO & Schema</h3>
+        <p class="service-description">Implement proper SEO practices and schema markup to improve your store's visibility in search results.</p>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-icon">💬</div>
+        <h3 class="service-title">Ongoing Support</h3>
+        <p class="service-description">Continuous maintenance, updates, and support to keep your store running at peak performance.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="section-header">
+      <h2 class="section-title">Let's Work Together</h2>
+      <p class="section-subtitle">Ready to transform your Shopify store? Let's discuss your project</p>
+    </div>
+    <div class="contact-container">
+      <div class="contact-info">
+        <h3 style="margin-bottom: 24px; font-size: 1.5rem;">Get In Touch</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 32px; line-height: 1.6;">
+          I'm always excited to work on new projects and help businesses create amazing Shopify experiences. Whether you need a complete theme overhaul or specific customizations, I'm here to help.
+        </p>
+        <div style="space-y: 16px;">
+          <div style="margin-bottom: 16px;">
+            <strong>Response Time:</strong> Within 24 hours
+          </div>
+          <div style="margin-bottom: 16px;">
+            <strong>Project Timeline:</strong> 1-4 weeks typically
+          </div>
+          <div style="margin-bottom: 16px;">
+            <strong>Consultation:</strong> Free initial discussion
+          </div>
+        </div>
+      </div>
+      
+<form class="contact-form" action="https://formspree.io/f/xyzjjvjy" method="POST">
+  
+  <div class="form-group">
+    <label class="form-label" for="name">Your Name</label>
+    <input class="form-input" type="text" id="name" name="name" required>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="email">Your Email</label>
+    <input class="form-input" type="email" id="email" name="email" required>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="project">Project Type</label>
+    <select class="form-input" id="project" name="project" required>
+      <option value="">-- Select Project Type --</option>
+      <option value="Theme Customization">Theme Customization</option>
+      <option value="New Store Setup">New Store Setup</option>
+      <option value="Performance Optimization">Performance Optimization</option>
+      <option value="App Integration">App Integration</option>
+      <option value="Ongoing Maintenance">Ongoing Maintenance</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="message">Project Details</label>
+    <textarea class="form-input form-textarea" id="message" name="message" required placeholder="Tell me about your project, timeline, and goals..."></textarea>
+  </div>
+
+  <!-- Optional: Redirect after submission -->
+  <!-- <input type="hidden" name="_redirect" value="https://yourwebsite.com/thank-you.html" /> -->
+
+  <button class="btn btn-secondary" type="submit" style="width: 100%;">Send Message</button>
+</form>
+    </div>
+  </section>
+
+ 
+  <footer>
+    <p>&copy; 2025 Ralph Saade. All rights reserved. Built with passion for Shopify excellence.</p>
+  </footer>
+
+  <script>
+    // Mobile menu functionality
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuToggle.addEventListener('click', () => {
+      mobileMenuToggle.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      });
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileMenuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+        mobileMenuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      }
+    });
+
+    // Smooth scrolling for all navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offsetTop = target.offsetTop - 80; // Account for fixed nav
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Enhanced scroll effect for navigation
+    let lastScrollTop = 0;
+    const nav = document.querySelector('nav');
+    
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      // Hide/show navigation on scroll
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        nav.style.transform = 'translateY(-100%)';
+      } else {
+        nav.style.transform = 'translateY(0)';
+      }
+
+      // Change nav background opacity based on scroll
+      if (scrollTop > 50) {
+        nav.style.background = 'rgba(255, 255, 255, 0.98)';
+        nav.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+      } else {
+        nav.style.background = 'rgba(255, 255, 255, 0.95)';
+        nav.style.boxShadow = 'none';
+      }
+      
+      lastScrollTop = scrollTop;
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in-up');
+          // Add staggered animation for grid items
+          if (entry.target.classList.contains('project-card') || 
+              entry.target.classList.contains('service-card')) {
+            const siblings = Array.from(entry.target.parentNode.children);
+            const index = siblings.indexOf(entry.target);
+            entry.target.style.animationDelay = `${index * 0.1}s`;
+          }
+        }
+      });
+    }, observerOptions);
+
+    // Observe elements for animation
+    document.querySelectorAll('.project-card, .service-card, .stat-card, .about-content, .contact-container').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Add loading states and smooth transitions
+    window.addEventListener('load', () => {
+      document.body.style.opacity = '1';
+      document.body.style.transition = 'opacity 0.3s ease';
+    });
+
+
+
+
+    // Add parallax effect to hero section
+    // window.addEventListener('scroll', () => {
+    //   const scrolled = window.pageYOffset;
+    //   const hero = document.querySelector('.hero');
+    //   if (hero && window.innerWidth > 768) {
+    //     hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+    //   }
+    // });
+
+    // Resize handler for responsive adjustments
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        // Close mobile menu on resize to desktop
+        if (window.innerWidth > 768) {
+          mobileMenuToggle.classList.remove('active');
+          mobileMenu.classList.remove('active');
+        }
+        
+        // Reset parallax on mobile
+        const hero = document.querySelector('.hero');
+        if (window.innerWidth <= 768 && hero) {
+          hero.style.transform = 'none';
+        }
+      }, 250);
+    });
+  </script>
+</body>
+</html>
